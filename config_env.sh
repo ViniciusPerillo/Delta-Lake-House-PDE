@@ -19,7 +19,7 @@ fi
 
 # Instalação da biblioteca pyspark
 pip install pyspark
-pip install delta
+pip install delta-spark==3.2.0
 
 # Download da base
 git clone https://github.com/gsoh/VED.git
