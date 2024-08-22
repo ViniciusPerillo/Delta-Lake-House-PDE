@@ -29,4 +29,7 @@ RUN pip install -r requirements.txt
 
 EXPOSE 8888
 
-CMD jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root
+RUN jupyter notebook --generate-config
+RUN echo "c.ServerApp.max_buffer_size = 12000000000" >> root/.jupyter/jupyter_notebook_config.py
+
+CMD jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.max_buffer_size=12000000000
