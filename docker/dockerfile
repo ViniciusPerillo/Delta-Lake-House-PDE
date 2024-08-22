@@ -1,0 +1,32 @@
+FROM ubuntu:latest
+
+
+RUN apt update && apt upgrade -y
+
+# Java install
+RUN apt -y install openjdk-8-jdk-headless
+
+# Spark install
+RUN apt install wget tar -y
+
+RUN wget https://dlcdn.apache.org/spark/spark-3.5.2/spark-3.5.2-bin-hadoop3.tgz
+RUN tar xvf spark-3.5.2-bin-hadoop3.tgz
+RUN rm spark-3.5.2-bin-hadoop3.tgz
+RUN mv spark-3.5.2-bin-hadoop3 /opt/spark
+
+ENV SPARK_HOME=/opt/spark
+ENV PATH=$PATH:$SPARK_HOME/bin
+
+# Python management
+RUN apt update && apt install -y python3 python3-pip python3-venv
+
+RUN python3 -m venv venv
+ENV PATH=venv/bin:$PATH
+
+# Installing python libraries
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+EXPOSE 8888
+
+CMD jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root
