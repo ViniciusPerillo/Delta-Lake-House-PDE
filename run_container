@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [[ $(docker ps -a | grep -c delta-lake) -ne 0 ]];then
+    echo "O container delta-lake já existe. Destruindo-o"
+    docker stop delta-lake
+    docker rm delta-lake
+fi
+
+echo 'Criando o container "delta-lake"'
+docker build -t spark ./docker
+docker run -p 8888:8888 --name delta-lake -v $(pwd):/home/ubuntu/delta-lake spark &
+xdg-open "http://localhost:8888"
