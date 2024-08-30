@@ -5,7 +5,7 @@ apt-get -y install openjdk-8-jdk-headless
 
 # Instalação do Spark com Hadoop integrado
 if [ ! -d "/opt/spark/bin" ]; then
-  VER=3.5.1
+  VER=3.5.2
     wget https://dlcdn.apache.org/spark/spark-$VER/spark-$VER-bin-hadoop3.tgz
     tar xvf spark-$VER-bin-hadoop3.tgz
     rm spark-$VER-bin-hadoop3.tgz
@@ -18,20 +18,27 @@ if [ ! -d "/opt/spark/bin" ]; then
 fi
 
 # Instalação da biblioteca pyspark
+
 pip install pyspark
+pyspark --packages com.crealytics:spark-excel_2.12:0.18.7
 pip install delta-spark==3.2.0
 
 # Download da base
 git clone https://github.com/gsoh/VED.git
-mkdir data
-mv VED/Data/VED_DynamicData_Part1.7z data
-mv VED/Data/VED_DynamicData_Part2.7z data
+mkdir data/dynamic
+mkdir data/static
+mv VED/Data/VED_DynamicData_Part1.7z data/dynamic
+mv VED/Data/VED_DynamicData_Part2.7z data/dynamic
+mv VED/Data/VED_Static_Data_ICE\&HEV.xlsx data/static
+mv VED/Data/VED_Static_Data_PHEV\&EV.xlsx data/static
 rm -r VED
 
 # Despactação da base
 apt-get install p7zip-full
-cd data
-7z e data/VED_DynamicData_Part1.7z
-7z e data/VED_DynamicData_Part2.7z
-rm data/VED_DynamicData_Part1.7z
-rm data/VED_DynamicData_Part2.7z
+cd data/dynamic
+7z e VED_DynamicData_Part1.7z
+7z e VED_DynamicData_Part2.7z
+rm VED_DynamicData_Part1.7z
+rm VED_DynamicData_Part2.7z
+
+cd ..
