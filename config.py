@@ -32,6 +32,7 @@ def standardize_for_delta_columns(column: str) -> str:
 
 def config() -> pyspark.sql.session.SparkSession:
     builder = pyspark.sql.SparkSession.builder.appName("DataLakehouse") \
+    .config("spark.master", "local[*]")
     .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
     .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
     .config("spark.memory.offHeap.enabled","true") \
